@@ -6,29 +6,29 @@
 FT5216::FT5216() { }
 
 void FT5216::init() {
-    Wire.begin();
+    Wire1.begin((uint8_t)31, (uint8_t)30, (uint32_t)400E3);
 }
 
 uint8_t FT5216::read(uint16_t *cx, uint16_t *cy) {
-    Wire.beginTransmission(FT5216_ADDR);
-    Wire.write(0x02); // Set point to TD_STATUS 
-    if (Wire.endTransmission(false) != 0) {
+    Wire1.beginTransmission(FT5216_ADDR);
+    Wire1.write(0x02); // Set point to TD_STATUS 
+    if (Wire1.endTransmission(false) != 0) {
         Serial.println("Write error !");
         return 0;
     }
 
-    uint8_t count = Wire.requestFrom(FT5216_ADDR, 5);
+    uint8_t count = Wire1.requestFrom(FT5216_ADDR, 5);
     if (count != 5) {
         Serial.println("Read error !");
         return 0;
     }
 
     // Process Data
-    uint8_t TD_STATUS = Wire.read();
-    uint8_t TOUCH1_XH = Wire.read();
-    uint8_t TOUCH1_XL = Wire.read();
-    uint8_t TOUCH1_YH = Wire.read();
-    uint8_t TOUCH1_YL = Wire.read();
+    uint8_t TD_STATUS = Wire1.read();
+    uint8_t TOUCH1_XH = Wire1.read();
+    uint8_t TOUCH1_XL = Wire1.read();
+    uint8_t TOUCH1_YH = Wire1.read();
+    uint8_t TOUCH1_YL = Wire1.read();
 
     *cx = (((uint16_t)TOUCH1_XH&0x0F)<<8)|TOUCH1_XL;
     *cy = (((uint16_t)TOUCH1_YH&0x0F)<<8)|TOUCH1_YL;

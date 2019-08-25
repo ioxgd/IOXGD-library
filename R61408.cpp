@@ -14,6 +14,7 @@
 
 #define LCD_RS     25    // Data or Command
 #define LCD_WR     24    // Write
+#define LCD_BL     36    // Backlight
 
 /*
  * ==== Wireing ====
@@ -111,6 +112,11 @@ void R61408::init() {
     fpioa_set_function(25, FUNC_GPIOHS9);
     gpiohs_set_drive_mode(8, GPIO_DM_OUTPUT);
     gpiohs_set_drive_mode(9, GPIO_DM_OUTPUT);
+	
+	// Backlight
+    fpioa_set_function(LCD_BL, FUNC_GPIOHS10);
+    gpiohs_set_drive_mode(10, GPIO_DM_OUTPUT);
+    *gpiohs->output_val.u32 |= (1<<10);
 
     SET_LCD_WR_ACTIVE();
     SET_LCD_RS_COMMAND();

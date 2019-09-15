@@ -36,9 +36,10 @@ static bool touch_pointer(lv_indev_drv_t * drv, lv_indev_data_t*data) {
 
 IOXGD::IOXGD() { }
 
-void IOXGD::setupLittlevGL() {
+void IOXGD::begin() {
     lcd.init();
     touch.init();
+    EEPROM.begin();
 
     lv_init();
 

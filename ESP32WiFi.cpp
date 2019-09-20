@@ -6,19 +6,19 @@
 ESP32WiFi::ESP32WiFi() { }
 
 void ESP32WiFi::reset() {
-	gpio_set_pin(2, GPIO_PV_HIGH);
+	gpio_set_pin(0, GPIO_PV_LOW);
 	delay(10);
-	gpio_set_pin(2, GPIO_PV_LOW);
+	gpio_set_pin(0, GPIO_PV_HIGH);
 	delay(10);
-	gpio_set_pin(2, GPIO_PV_HIGH);
+	gpio_set_pin(0, GPIO_PV_LOW);
 	delay(1000); // wait ready 1s
 }
 
 void ESP32WiFi::begin() {
-	SERIAL_ESP.begin(512000, 8, 9);
+	SERIAL_ESP.begin(512000, 6, 7);
 	
-	fpioa_set_function(10, FUNC_GPIO2);
-	gpio_set_drive_mode(2, GPIO_DM_OUTPUT);
+	fpioa_set_function(0, FUNC_GPIO0);
+	gpio_set_drive_mode(0, GPIO_DM_OUTPUT);
 	
 	reset();
 }

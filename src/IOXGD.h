@@ -1,0 +1,33 @@
+#ifndef __IOXGD_H__
+#define __IOXGD_H__
+
+#include "Arduino.h"
+#include "lcd/R61408.h"
+#include "touch/FT5216.h"
+#include "eeprom/I2CEEPROM.h"
+#include "pngdecode/png_decoder.h"
+
+#include <lvgl.h>
+#include <Ticker.h>
+
+#include <SPI.h>
+#include <SD.h>
+
+#define SETUP_LVGL       0x01
+#define SETUP_EEPROM     0x02
+#define SETUP_SD         0x04
+#define SETUP_PNG_DECODE 0x08
+
+#define SETUP_ALL (SETUP_LVGL|SETUP_EEPROM|SETUP_SD|SETUP_PNG_DECODE)
+
+class IOXGD {
+    public:
+        IOXGD();
+
+        void begin(uint16_t option = SETUP_ALL) ;
+
+};
+
+extern IOXGD gd;
+
+#endif

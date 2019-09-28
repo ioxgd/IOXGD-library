@@ -22,7 +22,7 @@ String ESP32HTTP::HTTPRequest(String url, uint8_t method, String payload) {
 	SERIAL_ESP.write(0x01); // dummy data
 
 	uint8_t state = 0;
-	uint32_t start = millis();
+	// uint32_t start = millis();
 
 	// Check Start
 	while (1) {

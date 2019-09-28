@@ -6,8 +6,9 @@
 static Ticker tickLV; /* timer for interrupt handler */
 #define LVGL_TICK_PERIOD 20
 
+#define DISPLAY_BUFFER_SIZE 512000
 static lv_disp_buf_t disp_buf;
-static lv_color_t buf[LV_HOR_RES_MAX * 10];
+static lv_color_t buf[DISPLAY_BUFFER_SIZE];
 
 static void disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p) {
     lcd.startPushColor(area->x1, area->y1, area->x2, area->y2);
@@ -43,7 +44,7 @@ void IOXGD::begin() {
 
     lv_init();
 
-    lv_disp_buf_init(&disp_buf, buf, NULL, LV_HOR_RES_MAX * 10);
+    lv_disp_buf_init(&disp_buf, buf, NULL, DISPLAY_BUFFER_SIZE);
 
     /*Initialize the display*/
     lv_disp_drv_t disp_drv;

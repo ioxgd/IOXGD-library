@@ -89,6 +89,18 @@ void R61408::Write_Data_int(uint16_t d) {
 }
 
 void R61408::init() {
+	pinMode(16, OUTPUT);
+	pinMode(17, OUTPUT);
+	pinMode(18, OUTPUT);
+	pinMode(19, OUTPUT);
+	pinMode(20, OUTPUT);
+	pinMode(21, OUTPUT);
+	pinMode(22, OUTPUT);
+	pinMode(23, OUTPUT);
+	pinMode(24, OUTPUT);
+	pinMode(25, OUTPUT);
+	pinMode(LCD_BL, OUTPUT);
+	
     // Data bus
     fpioa_set_function(16, FUNC_GPIOHS0);
     fpioa_set_function(17, FUNC_GPIOHS1);

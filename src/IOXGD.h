@@ -13,18 +13,26 @@
 #include <SPI.h>
 #include <SD.h>
 
+#include <FreeRTOS.h>
+#include <task.h>
+
+#define BUZZER_PIN 37
+
 #define SETUP_LVGL       0x01
 #define SETUP_EEPROM     0x02
 #define SETUP_SD         0x04
 #define SETUP_PNG_DECODE 0x08
+#define SETUP_BUZZER     0x10
 
-#define SETUP_ALL (SETUP_LVGL|SETUP_EEPROM|SETUP_SD|SETUP_PNG_DECODE)
+#define SETUP_ALL (SETUP_LVGL|SETUP_EEPROM|SETUP_SD|SETUP_PNG_DECODE|SETUP_BUZZER)
 
 class IOXGD {
     public:
         IOXGD();
 
         void begin(uint16_t option = SETUP_ALL) ;
+        void useFreeRTOS() ;
+        void beep() ;
 
 };
 

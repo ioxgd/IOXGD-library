@@ -12,12 +12,7 @@ static lv_color_t buf[DISPLAY_BUFFER_SIZE];
 
 static void disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p) {
     lcd.startPushColor(area->x1, area->y1, area->x2, area->y2);
-    for(uint16_t y=area->y1;y<=area->y2;y++) {
-        for(uint16_t x=area->x1;x<=area->x2;x++) {
-            lcd.pushColor(color_p->full);
-            ++color_p;
-        }
-    }
+    lcd.pushColorBlock((uint16_t*)color_p, (area->y2 - area->y1 + 1) * (area->x2 - area->x1 + 1));
     lcd.stopPushColor();
 
     lv_disp_flush_ready(disp); /* tell lvgl that flushing is done */
@@ -124,29 +119,59 @@ void IOXGD::begin(uint16_t option) {
         EEPROM.begin();
     }
 
+    if (option & SETUP_BUZZER) {
+        pinMode(BUZZER_PIN, OUTPUT);
+    }
+
     if (option & SETUP_SD) {
         if (!SD.begin(29)) {
             Serial.println("initialization SD card failed.");
+        } else {
+            lv_fs_drv_t drv;
+            lv_fs_drv_init(&drv);
+
+            drv.letter = 'S';
+            drv.file_size = 0;
+            drv.open_cb = lv_sd_open;
+            drv.close_cb = lv_sd_close;
+            drv.read_cb = lv_sd_read;
+            drv.write_cb = lv_sd_write;
+            drv.seek_cb = lv_sd_seek;
+            drv.tell_cb = lv_sd_tell;
+            drv.size_cb = lv_sd_size;
+
+            lv_fs_drv_register(&drv);
         }
 
-        lv_fs_drv_t drv;
-        lv_fs_drv_init(&drv);
-
-        drv.letter = 'S';
-        drv.file_size = 0;
-        drv.open_cb = lv_sd_open;
-        drv.close_cb = lv_sd_close;
-        drv.read_cb = lv_sd_read;
-        drv.write_cb = lv_sd_write;
-        drv.seek_cb = lv_sd_seek;
-        drv.tell_cb = lv_sd_tell;
-        drv.size_cb = lv_sd_size;
-
-        lv_fs_drv_register(&drv);
+        
     }
 
     if (option & SETUP_PNG_DECODE) {
         png_decoder_init();
+    }
+}
+
+void IOXGD::useFreeRTOS() {
+    xTaskCreate([](void*) {
+        while (1) {
+            lv_task_handler();
+            vTaskDelay(5 / portTICK_PERIOD_MS);
+        }
+    }, "lvLoopTask", 32768, NULL, 1, NULL);
+
+    vTaskStartScheduler();
+}
+
+void IOXGD::beep() {
+    BaseType_t xReturned = xTaskCreate([](void*) {
+        tone(BUZZER_PIN, 2.7E3);
+        vTaskDelay(50 / portTICK_PERIOD_MS);
+        noTone(BUZZER_PIN);
+        vTaskDelete(NULL);
+    }, "soundTask", 512, NULL, 5, NULL);
+
+    if(xReturned != pdPASS) {
+        Serial.println("Task xTaskCreate fail !");
     }
 }
 

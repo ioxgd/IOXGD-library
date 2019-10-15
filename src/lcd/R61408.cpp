@@ -120,7 +120,7 @@ void R61408::Write_Data_int(uint16_t d) {
 }
 
 void R61408::init() {
-	pinMode(16, OUTPUT);
+	pinMode(35, OUTPUT);
 	pinMode(17, OUTPUT);
 	pinMode(18, OUTPUT);
 	pinMode(19, OUTPUT);
@@ -163,7 +163,7 @@ void R61408::init() {
   */
   
   // Data bus (SPI)
-  fpioa_set_function(16, FUNC_SPI0_D0);
+  fpioa_set_function(35, FUNC_SPI0_D0);
   fpioa_set_function(17, FUNC_SPI0_D1);
   fpioa_set_function(18, FUNC_SPI0_D2);
   fpioa_set_function(19, FUNC_SPI0_D3);

@@ -142,8 +142,6 @@ void IOXGD::begin(uint16_t option) {
 
             lv_fs_drv_register(&drv);
         }
-
-        
     }
 
     if (option & SETUP_PNG_DECODE) {
@@ -151,7 +149,7 @@ void IOXGD::begin(uint16_t option) {
     }
 }
 
-void IOXGD::useFreeRTOS() {
+void IOXGD::startFreeRTOS() {
     xTaskCreate([](void*) {
         while (1) {
             lv_task_handler();
@@ -159,19 +157,33 @@ void IOXGD::useFreeRTOS() {
         }
     }, "lvLoopTask", 32768, NULL, 1, NULL);
 
+    systemEventGroup = xEventGroupCreate();
+
+    if (systemEventGroup != NULL) {
+        xTaskCreate([](void*) {
+            while (1) {
+                EventBits_t uxBits = xEventGroupWaitBits(systemEventGroup, 0x01, pdTRUE, pdFALSE, portMAX_DELAY);
+                if((uxBits & 0x01) != 0) {
+                    tone(BUZZER_PIN, 2.7E3);
+                    vTaskDelay(50 / portTICK_PERIOD_MS);
+                    noTone(BUZZER_PIN);
+                }
+            }
+        }, "soundTask", 512, NULL, 5, NULL);
+    } else {
+        Serial.println("The event group was not created because there was insufficient, FreeRTOS heap available.");
+    }
+
     vTaskStartScheduler();
 }
 
 void IOXGD::beep() {
-    BaseType_t xReturned = xTaskCreate([](void*) {
+    if (systemEventGroup != NULL) {
+        xEventGroupSetBits(systemEventGroup, 0x01);
+    } else {
         tone(BUZZER_PIN, 2.7E3);
-        vTaskDelay(50 / portTICK_PERIOD_MS);
+        delay(50);
         noTone(BUZZER_PIN);
-        vTaskDelete(NULL);
-    }, "soundTask", 512, NULL, 5, NULL);
-
-    if(xReturned != pdPASS) {
-        Serial.println("Task xTaskCreate fail !");
     }
 }
 

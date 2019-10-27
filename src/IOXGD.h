@@ -15,6 +15,7 @@
 
 #include <FreeRTOS.h>
 #include <task.h>
+#include <event_groups.h>
 
 #define BUZZER_PIN 37
 
@@ -26,12 +27,17 @@
 
 #define SETUP_ALL (SETUP_LVGL|SETUP_EEPROM|SETUP_SD|SETUP_PNG_DECODE|SETUP_BUZZER)
 
+static EventGroupHandle_t systemEventGroup = NULL;
+
 class IOXGD {
+    private:
+        
+
     public:
         IOXGD();
 
         void begin(uint16_t option = SETUP_ALL) ;
-        void useFreeRTOS() ;
+        void startFreeRTOS() ;
         void beep() ;
 
 };

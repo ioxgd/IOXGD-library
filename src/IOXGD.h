@@ -7,6 +7,11 @@
 #include "eeprom/I2CEEPROM.h"
 #include "pngdecode/png_decoder.h"
 
+// WiFi
+#include "wifi/ESP32WiFi.h"
+#include "wifi/ESP32HTTP.h"
+#include "wifi/ESP32NTP.h"
+
 #include <lvgl.h>
 #include <Ticker.h>
 

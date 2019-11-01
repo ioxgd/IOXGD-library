@@ -6,6 +6,7 @@
 #include "touch/FT5216.h"
 #include "eeprom/I2CEEPROM.h"
 #include "pngdecode/png_decoder.h"
+#include "rtc/DS3231.h"
 
 // WiFi
 #include "wifi/ESP32WiFi.h"

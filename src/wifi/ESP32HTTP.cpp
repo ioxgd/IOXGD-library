@@ -5,7 +5,7 @@
 
 ESP32HTTP::ESP32HTTP() { }
 
-String ESP32HTTP::HTTPRequest(String url, uint8_t method, String payload) {
+bool ESP32HTTP::HTTPRequest(String url, uint8_t method, String payload) {
 	clearBuffer();
 
 	// Serial.println("Send http request");
@@ -53,16 +53,14 @@ String ESP32HTTP::HTTPRequest(String url, uint8_t method, String payload) {
 	// Serial.println("Waiting respond");
 
 	while(SERIAL_ESP.available() < 2) delay(1); // Wait http code
-	uint16_t httpCode;
 	httpCode = (uint16_t)(SERIAL_ESP.read())<<8;
 	httpCode |= SERIAL_ESP.read();
 
 	while(SERIAL_ESP.available() < 2) delay(1); // Wait http respond payload count
-	uint16_t payloadSize;
 	payloadSize = (uint16_t)(SERIAL_ESP.read())<<8;
 	payloadSize |= SERIAL_ESP.read();
-  
-	String respondPayload = "";
+    // Serial.println(payloadSize);
+	/* String respondPayload = "";
 	while (payloadSize > 0) {
 		if (SERIAL_ESP.available()) {
 			respondPayload += (char)SERIAL_ESP.read();
@@ -70,25 +68,46 @@ String ESP32HTTP::HTTPRequest(String url, uint8_t method, String payload) {
 		} else {
 			delay(1);
 		}
+	} */
+
+	this->payload = (uint8_t*)malloc(payloadSize);
+	uint16_t i = 0;
+	uint16_t x = payloadSize;
+	while (x > 0) {
+		if (SERIAL_ESP.available()) {
+			this->payload[i++] = SERIAL_ESP.read();
+			x--;
+		} else {
+			delay(1);
+		}
 	}
 	
-	/*
-	Serial.println();
+	
+/* 	Serial.println();
 	Serial.println("HTTP Code: " + String(httpCode));
 	Serial.println("--------------------------");
 	Serial.println(respondPayload);
-	Serial.println("--------------------------");
-	*/
+	Serial.println("--------------------------"); */
+	
 
-  return respondPayload;
+	// return respondPayload;
+	return true;
 }
 
-String ESP32HTTP::get(String url) {
+bool ESP32HTTP::get(String url) {
 	return HTTPRequest(url, 0, String(""));
 }
 
-String ESP32HTTP::post(String url, String payload) {
+bool ESP32HTTP::post(String url, String payload) {
 	return HTTPRequest(url, 2, payload);
+}
+
+String ESP32HTTP::readString() {
+	char buff[payloadSize + 1];
+	memset(buff, 0, payloadSize + 1);
+	memcpy(buff, payload, payloadSize);
+	String msg = String(buff);
+	return msg;
 }
 
 ESP32HTTP HTTP;

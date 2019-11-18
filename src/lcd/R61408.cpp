@@ -445,7 +445,7 @@ void R61408::pushColorBlock(uint16_t* color, uint32_t size) {
   
   spi_init(LCD_SPI_CH, SPI_WORK_MODE_0, SPI_FF_OCTAL, 16, 0);
   spi_init_non_standard(SPI_DEVICE_0, 16, 0, 0, SPI_AITM_AS_FRAME_FORMAT);
-  spi_set_clk_rate(LCD_SPI_CH, 50E6);
+  spi_set_clk_rate(LCD_SPI_CH, 40E6);
   
   spi_send_data_normal_dma(LCD_DMA_CH, LCD_SPI_CH, SPI_CHIP_SELECT_0, color, size, SPI_TRANS_SHORT);
 

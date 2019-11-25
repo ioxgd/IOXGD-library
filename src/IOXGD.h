@@ -12,6 +12,7 @@
 #include "wifi/ESP32WiFi.h"
 #include "wifi/ESP32HTTP.h"
 #include "wifi/ESP32NTP.h"
+#include "wifi/ESP32BT.h"
 
 #include <lvgl.h>
 #include <Ticker.h>

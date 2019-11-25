@@ -2,7 +2,7 @@
 #define __ESP32_HTTP_H__
 
 #include "Arduino.h"
-#include "ESP32WiFi.h"
+#include "ESP32.h"
 
 class ESP32HTTP {
 	private:

@@ -2,14 +2,7 @@
 #define __ESP32_WIFI_H__
 
 #include "Arduino.h"
-
-#define SERIAL_ESP Serial1
-
-static void clearBuffer() {
-	while (SERIAL_ESP.available()) {
-		SERIAL_ESP.read();
-	}
-}
+#include "ESP32.h"
 
 class ESP32WiFi {
 	
@@ -20,9 +13,6 @@ class ESP32WiFi {
 	public:
 		ESP32WiFi() ;
 		
-		void reset() ;
-		
-		void begin() ;
 		void connect(String ssid, String pass) ;
 		bool isConnected() ;
 		

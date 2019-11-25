@@ -9,7 +9,7 @@ class ESP32HTTP {
 	
 	public:
 		uint16_t payloadSize;
-		uint8_t *payload;
+		uint8_t *payload = NULL;
 		uint16_t httpCode;
 
 		ESP32HTTP();
@@ -19,6 +19,8 @@ class ESP32HTTP {
 		bool post(String url, String payload) ;
 
 		String readString() ;
+
+		void free() ;
 	
 };
 

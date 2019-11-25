@@ -7,6 +7,7 @@ ESP32HTTP::ESP32HTTP() { }
 
 bool ESP32HTTP::HTTPRequest(String url, uint8_t method, String payload) {
 	clearBuffer();
+	this->free(); // clear old data
 
 	// Serial.println("Send http request");
   
@@ -94,12 +95,32 @@ bool ESP32HTTP::HTTPRequest(String url, uint8_t method, String payload) {
 	return true;
 }
 
+void ESP32HTTP::free() {
+	if (this->payload != NULL) {
+		free(this->payload);
+		this->payload = NULL;
+		payloadSize = 0;
+	}
+}
+
 bool ESP32HTTP::get(String url) {
 	return HTTPRequest(url, 0, String(""));
 }
 
+bool ESP32HTTP::patch(String url, String payload) {
+	return HTTPRequest(url, 1, payload);
+}
+
 bool ESP32HTTP::post(String url, String payload) {
 	return HTTPRequest(url, 2, payload);
+}
+
+bool ESP32HTTP::put(String url, String payload) {
+	return HTTPRequest(url, 3, payload);
+}
+
+bool ESP32HTTP::delete(String url, String payload) {
+	return HTTPRequest(url, 4, payload);
 }
 
 String ESP32HTTP::readString() {

@@ -4,7 +4,7 @@
 #include "Arduino.h"
 #include "ESP32.h"
 
-class ESP32BT {
+class ESP32BT : public Stream {
 	private:
 
 	public:

@@ -5,9 +5,9 @@
 
 ESP32HTTP::ESP32HTTP() { }
 
-bool ESP32HTTP::HTTPRequest(String url, uint8_t method, String payload) {
+bool ESP32HTTP::HTTPRequest(String url, uint8_t method, String payload, HTTPHeader *header, uint8_t headerSize) {
 	clearBuffer();
-	this->free(); // clear old data
+	this->end(); // clear old data
 
 	// Serial.println("Send http request");
   
@@ -19,7 +19,17 @@ bool ESP32HTTP::HTTPRequest(String url, uint8_t method, String payload) {
 	SERIAL_ESP.write(method);
 	SERIAL_ESP.write(payload.length());
 	SERIAL_ESP.print(payload);
-	SERIAL_ESP.write((uint8_t)0); // no add header
+	if (headerSize > 0) {
+		SERIAL_ESP.write(headerSize);
+		for (uint8_t i=0;i<headerSize;i++) {
+			SERIAL_ESP.write(header[i].name.length());
+			SERIAL_ESP.print(header[i].name);
+			SERIAL_ESP.write(header[i].value.length());
+			SERIAL_ESP.print(header[i].value);
+		}
+	} else {
+		SERIAL_ESP.write((uint8_t)0); // no add header
+	}
 	SERIAL_ESP.write(0x01); // dummy data
 
 	uint8_t state = 0;
@@ -51,11 +61,13 @@ bool ESP32HTTP::HTTPRequest(String url, uint8_t method, String payload) {
 		}
 	}
 
-	// Serial.println("Waiting respond");
+	//Serial.println("Waiting respond");
 
 	while(SERIAL_ESP.available() < 2) delay(1); // Wait http code
 	httpCode = (uint16_t)(SERIAL_ESP.read())<<8;
 	httpCode |= SERIAL_ESP.read();
+
+	//Serial.println("HTTP Code: " + String(httpCode));
 
 	while(SERIAL_ESP.available() < 2) delay(1); // Wait http respond payload count
 	payloadSize = (uint16_t)(SERIAL_ESP.read())<<8;
@@ -72,8 +84,10 @@ bool ESP32HTTP::HTTPRequest(String url, uint8_t method, String payload) {
 	} */
 
 	this->payload = (uint8_t*)malloc(payloadSize);
+	//Serial.println("Go to loop");
 	uint16_t i = 0;
 	uint16_t x = payloadSize;
+	// Serial.println(payloadSize);
 	while (x > 0) {
 		if (SERIAL_ESP.available()) {
 			this->payload[i++] = SERIAL_ESP.read();
@@ -83,19 +97,19 @@ bool ESP32HTTP::HTTPRequest(String url, uint8_t method, String payload) {
 		}
 	}
 	
-	
-/* 	Serial.println();
+	/*
+ 	Serial.println();
 	Serial.println("HTTP Code: " + String(httpCode));
 	Serial.println("--------------------------");
-	Serial.println(respondPayload);
-	Serial.println("--------------------------"); */
-	
+	Serial.write(this->payload, payloadSize);
+	Serial.println("--------------------------");
+	*/
 
 	// return respondPayload;
 	return true;
 }
 
-void ESP32HTTP::free() {
+void ESP32HTTP::end() {
 	if (this->payload != NULL) {
 		free(this->payload);
 		this->payload = NULL;
@@ -103,24 +117,24 @@ void ESP32HTTP::free() {
 	}
 }
 
-bool ESP32HTTP::get(String url) {
+bool ESP32HTTP::get(String url, HTTPHeader *header, uint8_t headerSize) {
 	return HTTPRequest(url, 0, String(""));
 }
 
-bool ESP32HTTP::patch(String url, String payload) {
-	return HTTPRequest(url, 1, payload);
+bool ESP32HTTP::patch(String url, String payload, HTTPHeader *header, uint8_t headerSize) {
+	return HTTPRequest(url, 1, payload, header, headerSize);
 }
 
-bool ESP32HTTP::post(String url, String payload) {
-	return HTTPRequest(url, 2, payload);
+bool ESP32HTTP::post(String url, String payload, HTTPHeader *header, uint8_t headerSize) {
+	return HTTPRequest(url, 2, payload, header, headerSize);
 }
 
-bool ESP32HTTP::put(String url, String payload) {
-	return HTTPRequest(url, 3, payload);
+bool ESP32HTTP::put(String url, String payload, HTTPHeader *header, uint8_t headerSize) {
+	return HTTPRequest(url, 3, payload, header, headerSize);
 }
 
-bool ESP32HTTP::delete(String url, String payload) {
-	return HTTPRequest(url, 4, payload);
+bool ESP32HTTP::_delete(String url, String payload, HTTPHeader *header, uint8_t headerSize) {
+	return HTTPRequest(url, 4, payload, header, headerSize);
 }
 
 String ESP32HTTP::readString() {

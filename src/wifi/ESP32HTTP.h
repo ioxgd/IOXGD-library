@@ -4,6 +4,11 @@
 #include "Arduino.h"
 #include "ESP32.h"
 
+typedef struct {
+	String name;
+	String value;
+} HTTPHeader;
+
 class ESP32HTTP {
 	private:
 	
@@ -14,13 +19,16 @@ class ESP32HTTP {
 
 		ESP32HTTP();
 		
-		bool HTTPRequest(String url, uint8_t method, String payload) ;
-		bool get(String url) ;
-		bool post(String url, String payload) ;
+		bool HTTPRequest(String url, uint8_t method, String payload, HTTPHeader *header = NULL, uint8_t headerSize = 0) ;
+		bool get(String url, HTTPHeader *header = NULL, uint8_t headerSize = 0) ;
+		bool patch(String url, String payload, HTTPHeader *header = NULL, uint8_t headerSize = 0) ;
+		bool post(String url, String payload, HTTPHeader *header = NULL, uint8_t headerSize = 0) ;
+		bool put(String url, String payload, HTTPHeader *header = NULL, uint8_t headerSize = 0) ;
+		bool _delete(String url, String payload, HTTPHeader *header = NULL, uint8_t headerSize = 0) ;
 
 		String readString() ;
 
-		void free() ;
+		void end() ;
 	
 };
 

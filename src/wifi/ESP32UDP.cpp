@@ -179,6 +179,14 @@ int WiFiUDP::available() {
 	return readBufferLength;
 }
 
+int WiFiUDP::peek() {
+    if (readBufferLength == 0) {
+		return -1; 
+	}
+
+    return readBuffer[readPointer];
+}
+
 int WiFiUDP::read() {
     if (readBufferLength == 0) {
 		return -1; 
@@ -199,15 +207,6 @@ int WiFiUDP::read(uint8_t* buffer, size_t len) {
 	memcpy(buffer, &readBuffer[readPointer], len);
 	readPointer += len;
 	readBufferLength -= len;
-}
-
-int WiFiUDP::peek() {
-    // Not support
-    return -1;
-}
-
-void WiFiUDP::flush() {
-    // Not support
 }
 
 #endif

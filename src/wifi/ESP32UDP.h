@@ -34,10 +34,7 @@ class WiFiUDP : public Stream {
 		int available() ;
 		int read() ;
 		int read(uint8_t* buffer, size_t len) ;
-
-		// Not support
 		int peek() ;
-		void flush() ;
 
 		IPAddress remoteIP() { return IPAddress(_remoteIP[0], _remoteIP[1], _remoteIP[2], _remoteIP[3]); };
 		uint16_t remotePort() { return _remotePort };

@@ -26,6 +26,7 @@ class WiFiUDP : public Stream {
 
 		uint8_t begin(uint16_t p) ;
 		int beginPacket(String host, uint16_t port) ;
+		int beginPacket(IPAddress ip, uint16_t port) ;
 		size_t write(uint8_t) ;
 		size_t write(uint8_t *buffer, size_t size) ;
 		int endPacket() ;
@@ -37,7 +38,7 @@ class WiFiUDP : public Stream {
 		int peek() ;
 
 		IPAddress remoteIP() { return IPAddress(_remoteIP[0], _remoteIP[1], _remoteIP[2], _remoteIP[3]); };
-		uint16_t remotePort() { return _remotePort };
+		uint16_t remotePort() { return _remotePort; };
 
 };
 

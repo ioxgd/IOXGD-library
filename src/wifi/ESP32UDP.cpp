@@ -1,6 +1,8 @@
 #ifndef __ESP32_UDP_CPP__
 #define __ESP32_UDP_CPP__
 
+#include "ESP32UDP.h"
+
 WiFiUDP::WiFiUDP() { }
 
 uint8_t WiFiUDP::begin(uint16_t port) {
@@ -12,7 +14,7 @@ uint8_t WiFiUDP::begin(uint16_t port) {
 	SERIAL_ESP.write(0xF1); // Start 2
 	SERIAL_ESP.write(0x16); // UDP begin command
 	SERIAL_ESP.write((uint8_t)(port >> 8));
-	SERIAL_ESP.print((uinnt8_t)(port & 0xFF));
+	SERIAL_ESP.write((uint8_t)(port & 0xFF));
 
 	int state = 0;
 
@@ -41,13 +43,21 @@ uint8_t WiFiUDP::begin(uint16_t port) {
 			delay(1);
 		}
 	}
+
+	return 1;
 }
 
 int WiFiUDP::beginPacket(String host, uint16_t port) {
     this->packetHost = host;
     this->packetPort = port;
 
-    writeBuffer = (uint8_t*)malloc(WRITE_BUFFER_SIZE);
+    this->writeBuffer = (uint8_t*)malloc(WRITE_BUFFER_SIZE);
+	
+	return 1;
+}
+
+int WiFiUDP::beginPacket(IPAddress ip, uint16_t port) {
+	return this->beginPacket(String(ip), port);
 }
 
 int WiFiUDP::endPacket() {
@@ -60,10 +70,10 @@ int WiFiUDP::endPacket() {
 	SERIAL_ESP.write(0x17); // UDP send command
 	SERIAL_ESP.write((uint8_t)this->packetHost.length());
 	SERIAL_ESP.print(this->packetHost);
-	SERIAL_ESP.write((uint8_t)(port >> 8));
-	SERIAL_ESP.write((uint8_t)(port & 0xFF));
-	SERIAL_ESP.write((uint8_t)(writePointer & 0xFF));
-	SERIAL_ESP.write(writeBuffer, writePointer);
+	SERIAL_ESP.write((uint8_t)(this->packetPort >> 8));
+	SERIAL_ESP.write((uint8_t)(this->packetPort & 0xFF));
+	SERIAL_ESP.write((uint8_t)(this->writePointer & 0xFF));
+	SERIAL_ESP.write(this->writeBuffer, this->writePointer);
 
 	int state = 0;
 
@@ -93,10 +103,13 @@ int WiFiUDP::endPacket() {
 		}
 	}
 
-	uint8_t writeSize = writePointer & 0xFF;
+	// Serial.println("UDP send response");
 
-	free(writeBuffer);
-	writePointer = 0;
+	uint8_t writeSize = this->writePointer & 0xFF;
+
+	free(this->writeBuffer);
+	this->writeBuffer = NULL;
+	this->writePointer = 0;
 
 	return writeSize;
 }
@@ -106,8 +119,9 @@ size_t WiFiUDP::write(uint8_t data) {
 }
 
 size_t WiFiUDP::write(uint8_t *buffer, size_t size) {
-    memcpy(&writeBuffer[writePointer], buffer, size);
-    writePointer += size;
+    memcpy(&this->writeBuffer[this->writePointer], buffer, size);
+    this->writePointer += size;
+	return size;
 }
 
 int WiFiUDP::parsePacket() {
@@ -207,6 +221,8 @@ int WiFiUDP::read(uint8_t* buffer, size_t len) {
 	memcpy(buffer, &readBuffer[readPointer], len);
 	readPointer += len;
 	readBufferLength -= len;
+
+	return len;
 }
 
 #endif

@@ -82,6 +82,8 @@ bool ESP32WiFi::isConnected() {
 			delay(1);
 		}
 	}
+
+	return 0;
 }
 
 uint8_t ESP32WiFi::scanNetworks() {
@@ -127,13 +129,13 @@ uint8_t ESP32WiFi::scanNetworks() {
 	for (uint8_t i=0;i<n;i++) {
 		while(SERIAL_ESP.available() <= 0) delay(1); // Wait ssid length
 		uint8_t len = SERIAL_ESP.read();
-
+        
 		while(SERIAL_ESP.available() < len) delay(1); // Wait ssid into buffer
 		scanSSID[inx] = "";
 		for (uint8_t x=0;x<len;x++) {
 			scanSSID[inx] += (char)SERIAL_ESP.read();
 		}
-
+        
 		while(SERIAL_ESP.available() <= 0) delay(1); // Wait encryption type
 		scanEncryption[inx] = (SERIAL_ESP.read() == 1);
 		
@@ -142,6 +144,8 @@ uint8_t ESP32WiFi::scanNetworks() {
 			inx = 0;
 		}
 	}
+
+	return n;
 }
 
 String ESP32WiFi::SSID(uint8_t networkItem) {

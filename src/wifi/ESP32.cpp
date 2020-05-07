@@ -25,4 +25,10 @@ void ESP32System::begin() {
 
 ESP32System ESP32;
 
+void clearBuffer() {
+	while (SERIAL_ESP.available()) {
+		SERIAL_ESP.read();
+	}
+}
+
 #endif

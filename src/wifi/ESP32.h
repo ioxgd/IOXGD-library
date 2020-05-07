@@ -5,11 +5,7 @@
 
 #define SERIAL_ESP Serial1
 
-static void clearBuffer() {
-	while (SERIAL_ESP.available()) {
-		SERIAL_ESP.read();
-	}
-}
+void clearBuffer() ;
 
 class ESP32System {
     public:

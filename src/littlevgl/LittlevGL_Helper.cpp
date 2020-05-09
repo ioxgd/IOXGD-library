@@ -78,14 +78,14 @@ uint32_t object_get_gradient_color(lv_obj_t *obj) {
 	return lv_color_to32(style->body.grad_color);
 }
 
-void object_set_corner_radius(lv_obj_t *obj, uint32_t radius) {
+void object_set_radius(lv_obj_t *obj, uint32_t radius) {
 	lv_style_t* style = (lv_style_t*)lv_obj_get_style(obj);
 	if (style == NULL) return; // get style fail
 	style->body.radius = radius;
 	lv_obj_set_style(obj, style);
 }
 
-uint32_t object_get_corner_radius(lv_obj_t *obj) {
+uint32_t object_get_radius(lv_obj_t *obj) {
 	lv_style_t* style = (lv_style_t*)lv_obj_get_style(obj);
 	if (style == NULL) return 0; // get style fail
 	return style->body.radius;
@@ -769,14 +769,14 @@ uint32_t chart_get_background_grad_color(lv_obj_t *obj) {
 	return lv_color_to32(style->body.grad_color);
 }
 
-void chart_set_corner_radius(lv_obj_t *obj, uint32_t radius) {
+void chart_set_radius(lv_obj_t *obj, uint32_t radius) {
 	lv_style_t* style = (lv_style_t*)lv_chart_get_style(obj, LV_CHART_STYLE_MAIN);
 	if (style == NULL) return; // get style fail
 	style->body.radius = radius;
 	lv_chart_set_style(obj, LV_CHART_STYLE_MAIN, style);
 }
 
-uint32_t chart_get_corner_radius(lv_obj_t *obj) {
+uint32_t chart_get_radius(lv_obj_t *obj) {
 	lv_style_t* style = (lv_style_t*)lv_chart_get_style(obj, LV_CHART_STYLE_MAIN);
 	if (style == NULL) return 0; // get style fail
 	return style->body.radius;

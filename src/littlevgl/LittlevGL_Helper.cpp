@@ -776,6 +776,32 @@ void chart_set_radius(lv_obj_t *obj, uint32_t radius) {
 	lv_chart_set_style(obj, LV_CHART_STYLE_MAIN, style);
 }
 
+void chart_set_border_width(lv_obj_t *obj, uint16_t width) {
+	lv_style_t* style = (lv_style_t*)lv_chart_get_style(obj, LV_CHART_STYLE_MAIN);
+	if (style == NULL) return; // get style fail
+	style->body.border.width = width;
+	lv_led_set_style(obj, LV_LED_STYLE_MAIN, style);
+}
+
+uint16_t chart_get_border_width(lv_obj_t *obj) {
+	lv_style_t* style = (lv_style_t*)lv_chart_get_style(obj, LV_CHART_STYLE_MAIN);
+	if (style == NULL) return 0; // get style fail
+	return style->body.border.width;
+}
+
+void chart_set_border_color(lv_obj_t *obj, uint32_t color) {
+	lv_style_t* style = (lv_style_t*)lv_chart_get_style(obj, LV_CHART_STYLE_MAIN);
+	if (style == NULL) return; // get style fail
+	style->body.border.color = lv_color_hex(color);
+	lv_led_set_style(obj, LV_LED_STYLE_MAIN, style);
+}
+
+uint32_t chart_get_border_color(lv_obj_t *obj) {
+	lv_style_t* style = (lv_style_t*)lv_chart_get_style(obj, LV_CHART_STYLE_MAIN);
+	if (style == NULL) return 0; // get style fail
+	return lv_color_to32(style->body.border.color);
+}
+
 uint32_t chart_get_radius(lv_obj_t *obj) {
 	lv_style_t* style = (lv_style_t*)lv_chart_get_style(obj, LV_CHART_STYLE_MAIN);
 	if (style == NULL) return 0; // get style fail
@@ -1334,6 +1360,14 @@ void silder_set_value(lv_obj_t *obj, int16_t value) {
 
 bool silder_get_value(lv_obj_t *obj) {	
 	return lv_slider_get_value(obj);
+}
+
+void silder_set_range(lv_obj_t *obj, lv_coord_t min, lv_coord_t max) {	
+	lv_slider_set_range(obj, min, max);
+}
+
+lv_coord_t silder_get_range(lv_obj_t *obj) {	
+	return 0; // TODO : Not Support
 }
 
 void silder_set_handler(lv_obj_t *obj, lv_event_cb_t cb) {

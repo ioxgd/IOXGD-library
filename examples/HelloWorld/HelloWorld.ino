@@ -1,0 +1,19 @@
+#include <IOXGD.h>
+
+void setup() {
+  gd.begin(SETUP_LVGL);
+  
+  xTaskCreate([](void*) {
+    // put your setup code here, to run once:
+    load_page(); // Show page
+    
+    while (1) {
+      // put your main code here, to run repeatedly:
+      delay(100);
+    }
+  }, "mainTask", 1024, NULL, 1, NULL);
+
+  gd.startFreeRTOS();
+}
+
+void loop() { }

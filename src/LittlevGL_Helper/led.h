@@ -33,4 +33,9 @@ uint32_t led_get_shadow_color(lv_obj_t *obj) ;
 void led_set_bright(lv_obj_t *obj, uint8_t bright) ;
 uint8_t led_get_bright(lv_obj_t *obj) ;
 
+
+void led_write(lv_obj_t *obj, int value) ;
+void led_toggle(lv_obj_t *obj) ;
+int led_read(lv_obj_t *obj) ;
+
 #endif

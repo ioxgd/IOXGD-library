@@ -152,4 +152,16 @@ uint8_t led_get_bright(lv_obj_t *obj) {
 	return lv_led_get_bright(obj);
 }
 
+void led_write(lv_obj_t *obj, int value) {
+	led_set_bright(obj, value ? 255 : 0);
+}
+
+void led_toggle(lv_obj_t *obj) {
+	led_set_bright(obj, led_get_bright(obj) > 127 ? 0 : 255);
+}
+
+int led_read(lv_obj_t *obj) {
+	return led_get_bright(obj) > 127;
+}
+
 #endif

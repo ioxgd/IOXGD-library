@@ -235,6 +235,7 @@ lv_coord_t label_get_height(lv_obj_t *obj) {
 
 void label_set_text(lv_obj_t *obj, String txt) {	
 	lv_label_set_text(obj, txt.c_str());
+	lv_obj_realign(obj);
 }
 
 String label_get_text(lv_obj_t *obj) {	

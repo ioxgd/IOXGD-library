@@ -7,7 +7,7 @@
 #include "eeprom/I2CEEPROM.h"
 #include "pngdecode/png_decoder.h"
 #include "rtc/DS3231.h"
-#include "littlevgl/LittlevGL_Helper.h"
+#include "LittlevGL_Helper/LittlevGL_Helper.h"
 
 // WiFi
 #include "wifi/ESP32WiFi.h"

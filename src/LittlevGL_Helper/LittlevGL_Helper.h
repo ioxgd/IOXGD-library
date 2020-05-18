@@ -9,5 +9,6 @@
 #include "chart.h"
 #include "switch.h"
 #include "silder.h"
+#include "event_helper.h"
 
 #endif

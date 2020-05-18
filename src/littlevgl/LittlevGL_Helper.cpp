@@ -38,6 +38,7 @@ lv_coord_t object_get_y(lv_obj_t *obj) {
 
 void object_set_width(lv_obj_t *obj, lv_coord_t w) {	
 	lv_obj_set_width(obj, w);
+	lv_obj_realign(obj);
 }
 
 lv_coord_t object_get_width(lv_obj_t *obj) {	
@@ -46,6 +47,7 @@ lv_coord_t object_get_width(lv_obj_t *obj) {
 
 void object_set_height(lv_obj_t *obj, lv_coord_t h) {	
 	lv_obj_set_height(obj, h);
+	lv_obj_realign(obj);
 }
 
 lv_coord_t object_get_height(lv_obj_t *obj) {	
@@ -219,6 +221,7 @@ lv_coord_t label_get_y(lv_obj_t *obj) {
 
 void label_set_width(lv_obj_t *obj, lv_coord_t w) {	
 	lv_obj_set_width(obj, w);
+	lv_obj_realign(obj);
 }
 
 lv_coord_t label_get_width(lv_obj_t *obj) {	
@@ -227,6 +230,7 @@ lv_coord_t label_get_width(lv_obj_t *obj) {
 
 void label_set_height(lv_obj_t *obj, lv_coord_t h) {	
 	lv_obj_set_height(obj, h);
+	lv_obj_realign(obj);
 }
 
 lv_coord_t label_get_height(lv_obj_t *obj) {	
@@ -244,6 +248,7 @@ String label_get_text(lv_obj_t *obj) {
 
 void label_set_text_align(lv_obj_t *obj, lv_label_align_t align) {	
 	lv_label_set_align(obj, align);
+	lv_obj_realign(obj);
 }
 
 lv_label_align_t label_get_text_align(lv_obj_t *obj) {	
@@ -320,6 +325,7 @@ lv_coord_t button_set_y(lv_obj_t *obj) {
 
 void button_set_width(lv_obj_t *obj, lv_coord_t w) {	
 	lv_obj_set_width(obj, w);
+	lv_obj_realign(obj);
 }
 
 lv_coord_t button_get_width(lv_obj_t *obj) {	
@@ -328,6 +334,7 @@ lv_coord_t button_get_width(lv_obj_t *obj) {
 
 void button_set_height(lv_obj_t *obj, lv_coord_t h) {	
 	lv_obj_set_height(obj, h);
+	lv_obj_realign(obj);
 }
 
 lv_coord_t button_get_height(lv_obj_t *obj) {	
@@ -523,6 +530,7 @@ lv_coord_t led_set_y(lv_obj_t *obj) {
 
 void led_set_width(lv_obj_t *obj, lv_coord_t w) {	
 	lv_obj_set_width(obj, w);
+	lv_obj_realign(obj);
 }
 
 lv_coord_t led_set_width(lv_obj_t *obj) {	
@@ -531,6 +539,7 @@ lv_coord_t led_set_width(lv_obj_t *obj) {
 
 void led_set_height(lv_obj_t *obj, lv_coord_t h) {	
 	lv_obj_set_height(obj, h);
+	lv_obj_realign(obj);
 }
 
 lv_coord_t led_get_height(lv_obj_t *obj) {	
@@ -714,6 +723,7 @@ lv_coord_t chart_get_y(lv_obj_t *obj) {
 
 void chart_set_width(lv_obj_t *obj, lv_coord_t w) {	
 	lv_obj_set_width(obj, w);
+	lv_obj_realign(obj);
 }
 
 lv_coord_t chart_get_width(lv_obj_t *obj) {	
@@ -722,6 +732,7 @@ lv_coord_t chart_get_width(lv_obj_t *obj) {
 
 void chart_set_height(lv_obj_t *obj, lv_coord_t h) {	
 	lv_obj_set_height(obj, h);
+	lv_obj_realign(obj);
 }
 
 lv_coord_t chart_get_height(lv_obj_t *obj) {	
@@ -879,6 +890,7 @@ lv_coord_t switch_get_y(lv_obj_t *obj) {
 
 void switch_set_width(lv_obj_t *obj, lv_coord_t w) {	
 	lv_obj_set_width(obj, w);
+	lv_obj_realign(obj);
 }
 
 lv_coord_t switch_get_width(lv_obj_t *obj) {	
@@ -887,6 +899,7 @@ lv_coord_t switch_get_width(lv_obj_t *obj) {
 
 void switch_set_height(lv_obj_t *obj, lv_coord_t h) {	
 	lv_obj_set_height(obj, h);
+	lv_obj_realign(obj);
 }
 
 lv_coord_t switch_get_height(lv_obj_t *obj) {	
@@ -1171,6 +1184,7 @@ lv_coord_t silder_get_y(lv_obj_t *obj) {
 
 void silder_set_width(lv_obj_t *obj, lv_coord_t w) {	
 	lv_obj_set_width(obj, w);
+	lv_obj_realign(obj);
 }
 
 lv_coord_t silder_get_width(lv_obj_t *obj) {	
@@ -1179,6 +1193,7 @@ lv_coord_t silder_get_width(lv_obj_t *obj) {
 
 void silder_set_height(lv_obj_t *obj, lv_coord_t h) {	
 	lv_obj_set_height(obj, h);
+	lv_obj_realign(obj);
 }
 
 lv_coord_t silder_get_height(lv_obj_t *obj) {	

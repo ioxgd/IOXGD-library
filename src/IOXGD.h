@@ -38,6 +38,7 @@
 #define SETUP_ALL (SETUP_LVGL|SETUP_EEPROM|SETUP_SD|SETUP_PNG_DECODE|SETUP_BUZZER)
 
 static EventGroupHandle_t systemEventGroup = NULL;
+static TaskHandle_t lvLoopTaskHandle = NULL;
 
 class IOXGD {
     private:

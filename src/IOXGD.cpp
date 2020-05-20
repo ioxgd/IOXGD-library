@@ -155,7 +155,7 @@ void IOXGD::startFreeRTOS() {
             lv_task_handler();
             vTaskDelay(5 / portTICK_PERIOD_MS);
         }
-    }, "lvLoopTask", 32768, NULL, 1, NULL);
+    }, "lvLoopTask", 32768, NULL, 1, &lvLoopTaskHandle);
 
     systemEventGroup = xEventGroupCreate();
 

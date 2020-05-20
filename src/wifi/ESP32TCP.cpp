@@ -79,8 +79,8 @@ int WiFiClient::connect(String host, int port) {
 	while (SERIAL_ESP.available() <= 0) delay(1);
 	
 	uint8_t conn = SERIAL_ESP.read();
-	Serial.print("ROS: ");
-    Serial.println(conn);
+	/* Serial.print("ROS: ");
+    Serial.println(conn); */
 	
 	return conn;
 }

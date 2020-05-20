@@ -7,11 +7,25 @@ WiFiClient::WiFiClient(int socket) {
 	this->socket = socket;
 }
 
+int WiFiClient::connect(IPAddress ip, uint16_t port) {
+	return connect(String(ip[0]) + "." + String(ip[1]) + "." + String(ip[2]) + "." + String(ip[3]), port);
+}
+
+int WiFiClient::connect(const char *host, uint16_t port) {
+	return connect(String(host), port);
+}
+
 int WiFiClient::connect(String host, int port) {
 	clearBuffer();
-
-	// Serial.println("Send tcp connect begin");
-
+    
+	/*
+	Serial.print("Send tcp connect begin -> ");
+	Serial.print(host);
+	Serial.print(':');
+	Serial.print(port);
+	Serial.println();
+    */
+	
 	int hostIp[4] = { 0, 0, 0, 0 };
   
 	SERIAL_ESP.write(0x1F); // Start 1
@@ -63,11 +77,15 @@ int WiFiClient::connect(String host, int port) {
 	}
 
 	while (SERIAL_ESP.available() <= 0) delay(1);
-
-	return SERIAL_ESP.read() == 1;
+	
+	uint8_t conn = SERIAL_ESP.read();
+	Serial.print("ROS: ");
+    Serial.println(conn);
+	
+	return conn;
 }
 
-bool WiFiClient::connected() {
+uint8_t WiFiClient::connected() {
 	clearBuffer();
 
 	// Serial.println("Send tcp connected begin");
@@ -107,7 +125,7 @@ bool WiFiClient::connected() {
 
 	while (SERIAL_ESP.available() <= 0) delay(1);
 
-	return SERIAL_ESP.read() == 1;
+	return SERIAL_ESP.read() == 1 ? 1 : 0;
 }
 
 void WiFiClient::stop() {
@@ -202,7 +220,7 @@ int WiFiClient::read() {
 	return c;
 }
 
-int WiFiClient::read(uint8_t *buff, uint16_t size) {
+int WiFiClient::read(uint8_t *buf, size_t size) {
 	clearBuffer();
 
 	// Serial.println("Send tcp read");
@@ -242,7 +260,7 @@ int WiFiClient::read(uint8_t *buff, uint16_t size) {
 		}
 	}
 
-	SERIAL_ESP.readBytes(buff, size);
+	SERIAL_ESP.readBytes(buf, size);
 
 	return size;
 }
@@ -256,7 +274,7 @@ size_t WiFiClient::write(uint8_t c) {
 	return this->write(&c, 1);
 }
 
-size_t WiFiClient::write(const uint8_t *buffer, size_t size) {
+size_t WiFiClient::write(const uint8_t *buf, size_t size) {
 	clearBuffer();
 
 	// Serial.println("Send tcp write");
@@ -267,7 +285,7 @@ size_t WiFiClient::write(const uint8_t *buffer, size_t size) {
 	SERIAL_ESP.write(this->socket);
 	SERIAL_ESP.write((uint8_t)(size>>8));
 	SERIAL_ESP.write((uint8_t)(size&0xFF));
-	SERIAL_ESP.write(buffer, size);
+	SERIAL_ESP.write(buf, size);
 	
 	int state = 0;
 
@@ -300,6 +318,10 @@ size_t WiFiClient::write(const uint8_t *buffer, size_t size) {
 	// Serial.println("Send tcp write end");
 
 	return size;
+}
+
+void WiFiClient::flush() {
+	// not support
 }
 
 #endif

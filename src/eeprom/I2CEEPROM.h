@@ -14,7 +14,9 @@ class I2CEEPROM {
 		
 		void begin() ;
 		void write(int addr, byte data) ;
+		int writeBlock(int addr, uint8_t *buf, int size) ;
 		byte read(int addr) ;
+		int readBlock(int addr, uint8_t *buf, int size) ;
 		int print(int addr, String text);
 		String readString(int addr) ;
 		

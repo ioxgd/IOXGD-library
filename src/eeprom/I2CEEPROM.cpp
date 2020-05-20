@@ -7,6 +7,13 @@
 
 #include "I2CEEPROM.h"
 
+#include <stdio.h>
+#include "fpioa.h"
+#include "utils.h"
+#include "sysctl.h"
+#include <stdlib.h>
+#include <string.h>
+
 I2CEEPROM::I2CEEPROM(int addr) {
 	i2c_addr = addr;
 }
@@ -66,6 +73,44 @@ String I2CEEPROM::readString(int addr) {
 		buf += (char)Wire.read();
 	}
 	return buf;
+}
+
+int I2CEEPROM::writeBlock(int addr, uint8_t *buf, int size) {
+	/* Wire.beginTransmission(i2c_addr);
+    Wire.write((addr>>8)&0xFF);
+    Wire.write(addr&0xFF);
+	for (int i=0;i<size;i++) {
+	  Wire.write(buf[i]);
+	}
+    Wire.endTransmission();
+	*/
+	uint8_t buff[2 + size];
+	buff[0] = (addr>>8)&0xFF;
+	buff[1] = addr&0xFF;
+	memcpy(&buff[2], buf, size);
+	Wire.writeTransmission(i2c_addr, buff, 2 + size, true);
+	
+	return size;
+}
+
+int I2CEEPROM::readBlock(int addr, uint8_t *buf, int size) {
+	Wire.beginTransmission(i2c_addr);
+    Wire.write((addr>>8)&0xFF);
+    Wire.write(addr&0xFF);
+    Wire.endTransmission();
+	
+	// int readSize = Wire.requestFrom(i2c_addr, size);
+	int readSize = Wire.readTransmission(i2c_addr, buf, size, true);
+	/*
+	Serial.println("Read size: " + String(readSize));
+	Serial.println("Available size: " + String(Wire.available()));
+    for (int i=0;i<min(Wire.available(), size);i++){
+		buf[i] = Wire.read();
+	}
+	
+	return min(Wire.available(), size);
+	*/
+	return size;
 }
 
 I2CEEPROM EEPROM(0x50);

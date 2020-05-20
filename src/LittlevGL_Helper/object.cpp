@@ -56,7 +56,7 @@ lv_coord_t object_get_height(lv_obj_t *obj) {
 void object_set_main_color(lv_obj_t *obj, uint32_t color) {
 	lv_style_t* style = (lv_style_t*)lv_obj_get_style(obj);
 	if (style == NULL) return; // get style fail
-	style->body.main_color = lv_color_hex(0xFF);
+	style->body.main_color = lv_color_hex(color);
 	lv_obj_set_style(obj, style);
 }
 
